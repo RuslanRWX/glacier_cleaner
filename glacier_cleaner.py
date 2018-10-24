@@ -34,6 +34,7 @@ def file_parse():
             #       +archive['ArchiveDescription']+" ID: "\
             #       +archive['ArchiveId'])
             delete_job(archive['ArchiveId'])
+    rm_file()
 
 
 def rm_file():
@@ -75,7 +76,6 @@ def create_file_glacier(id):
 def main():
     if os.path.exists(file_glacier):
         file_parse()
-    #    rm_file()
     elif os.path.exists(file_job):
         reveal_job()
     else:
