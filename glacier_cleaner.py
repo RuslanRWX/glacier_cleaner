@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-Days = 20
+Days = 180
 vault_name = "backup"
 file_glacier = "/tmp/output_glacier.json"
-file_job = "/tmp/outpub_glacier_job.json"
+file_created_job = "/tmp/output_glacier_job.json"
 #
 file_job_reveal = "/tmp/output_glacier_reveal.json"
 
@@ -47,7 +47,7 @@ def creat_job():
     print ("create a job file")
     #job_parm={"Type": "inventory-retrieval"}
     cmd="aws glacier initiate-job --account-id - --vault-name " + vault_name + \
-    " --job-parameters \'{\"Type\": \"inventory-retrieval\"}\' > "+ file_job
+    " --job-parameters \'{\"Type\": \"inventory-retrieval\"}\' > " + file_created_job
     print(cmd)
 
 def reveal_job():
@@ -58,25 +58,25 @@ def reveal_job():
     data_json=json.loads(open(file_job_reveal).read())
     for data in data_json['JobList']:
         #print(data['StatusCode'])
-        if data['StatusCode'] == "Done":
+        if data['StatusCode'] == "Succeeded":
             #create_file_glacier (data['JobId'])
             create_file_glacier(data['JobId'])
         else:
-            exit 0
+            exit (0)
 
 
 def create_file_glacier(id):
     print ("create glacier file")
     cmd="aws glacier get-job-output --account-id - --vault-name "+\
-        vault_name +  "--job-id "+ id +" > "+ file_glacier
-    print (cmd)
+        vault_name +  " --job-id "+ id +" "+ file_glacier
+    os.system(cmd)
     file_parse()
 
 
 def main():
     if os.path.exists(file_glacier):
         file_parse()
-    elif os.path.exists(file_job):
+    elif os.path.exists(file_created_job):
         reveal_job()
     else:
         creat_job()
