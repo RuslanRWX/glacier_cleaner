@@ -12,12 +12,14 @@ import datetime
 import os
 
 def delete_job(id):
+    print ("delete archive ")+ id
     cmd = "aws glacier delete-archive --account-id - --vault-name "+ \
           vault_name +" --archive-id"+ id
     print(cmd)
     #os.system(cmd)
 
 def check_date(creat_date):
+    print ("Check data")
     creat_date=datetime.datetime.strptime(creat_date,"%Y-%m-%dT%H:%M:%SZ")
     date = datetime.datetime.now() - datetime.timedelta(days=Days)
     if  date.strftime('%s') > creat_date.strftime('%s'):
@@ -27,7 +29,7 @@ def check_date(creat_date):
 
 
 def file_parse():
-    print "File parse"
+    print ("File parse")
     data_json = json.loads(open(file_glacier).read())
     for archive in data_json['ArchiveList']:
         if check_date(archive['CreationDate']):
@@ -39,7 +41,7 @@ def file_parse():
 
 
 def rm_file():
-    print "rm file"
+    print ("rm file")
     cmd_mv = "mv "+ file_glacier +" "+ file_glacier +".last"
     cmd_rm = "rm -rf "+ file_glacier
     os.system(cmd_mv)
@@ -78,7 +80,7 @@ def create_file_glacier(id):
 
 
 def main():
-    print "Start Glacier cleaner"
+    print ("Start Glacier cleaner")
     if os.path.exists(file_glacier):
         file_parse()
     elif os.path.exists(file_created_job):
