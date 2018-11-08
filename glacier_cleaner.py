@@ -10,8 +10,6 @@ file_job_reveal = "/tmp/output_glacier_reveal.json"
 import json
 import datetime
 import os
-global Done
-Done = 1
 
 def delete_job(id):
     cmd = "aws glacier delete-archive --account-id - --vault-name "+ \
@@ -29,6 +27,7 @@ def check_date(creat_date):
 
 
 def file_parse():
+    print "File parse"
     data_json = json.loads(open(file_glacier).read())
     for archive in data_json['ArchiveList']:
         if check_date(archive['CreationDate']):
@@ -40,6 +39,7 @@ def file_parse():
 
 
 def rm_file():
+    print "rm file"
     cmd_mv = "mv "+ file_glacier +" "+ file_glacier +".last"
     cmd_rm = "rm -rf "+ file_glacier
     os.system(cmd_mv)
@@ -78,6 +78,7 @@ def create_file_glacier(id):
 
 
 def main():
+    print "Start Glacier cleaner"
     if os.path.exists(file_glacier):
         file_parse()
     elif os.path.exists(file_created_job):
@@ -85,6 +86,6 @@ def main():
     else:
         creat_job()
 
-while Done == 0:
-    main()
+
+main()
 
