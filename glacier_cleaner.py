@@ -10,6 +10,8 @@ file_job_reveal = "/tmp/output_glacier_reveal.json"
 import json
 import datetime
 import os
+global Done
+Done = 1
 
 def delete_job(id):
     cmd = "aws glacier delete-archive --account-id - --vault-name "+ \
@@ -42,6 +44,8 @@ def rm_file():
     cmd_rm = "rm -rf "+ file_glacier
     os.system(cmd_mv)
     os.system(cmd_rm)
+    global Done
+    Done = "0"
 
 def creat_job():
     print ("create a job file")
@@ -81,8 +85,6 @@ def main():
     else:
         creat_job()
 
-main()
-
-
-
+while Done == 0:
+    main()
 
