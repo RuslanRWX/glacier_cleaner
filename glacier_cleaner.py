@@ -55,11 +55,13 @@ def creat_job():
     cmd="aws glacier initiate-job --account-id - --vault-name " + vault_name + \
     " --job-parameters \'{\"Type\": \"inventory-retrieval\"}\' > " + file_created_job
     print(cmd)
+    os.system(cmd)
 
 def reveal_job():
     print ("reveal job")
     cmd="aws glacier list-jobs --account-id - --vault-name " \
       + vault_name +" > " + file_job_reveal
+    print(cmd)
     os.system(cmd)
     data_json=json.loads(open(file_job_reveal).read())
     for data in data_json['JobList']:
@@ -75,6 +77,7 @@ def create_file_glacier(id):
     print ("create glacier file")
     cmd="aws glacier get-job-output --account-id - --vault-name "+\
         vault_name +  " --job-id "+ id +" "+ file_glacier
+    print(cmd)
     os.system(cmd)
     file_parse()
 
