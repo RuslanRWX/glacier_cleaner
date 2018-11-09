@@ -12,7 +12,7 @@ import datetime
 import os
 
 def delete_job(id):
-    print ("delete archive ")+ id
+    print ("delete archive ")+ str(id)
     cmd = "aws glacier delete-archive --account-id - --vault-name "+ \
           vault_name +" --archive-id"+ id
     print(cmd)
