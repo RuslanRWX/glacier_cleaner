@@ -14,7 +14,7 @@ import os
 def delete_job(id):
     print ("delete archive "+ str(id))
     cmd = "aws glacier delete-archive --account-id - --vault-name "+ \
-          vault_name +" --archive-id"+ id
+          vault_name +" --archive-id "+ id
     print(cmd)
     #os.system(cmd)
 
