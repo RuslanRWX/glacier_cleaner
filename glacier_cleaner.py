@@ -17,6 +17,8 @@ def delete_job(id):
           vault_name +" --archive-id "+ id
     print(cmd)
     #os.system(cmd)
+    cmd_rm='rm -f ' + file_created_job
+    os.system(cmd_rm)
 
 def check_date(creat_date):
     print ("Check data")
@@ -33,9 +35,9 @@ def file_parse():
     data_json = json.loads(open(file_glacier).read())
     for archive in data_json['ArchiveList']:
         if check_date(archive['CreationDate']):
-            #print (archive['CreationDate']+" Description: "\
-            #       +archive['ArchiveDescription']+" ID: "\
-            #       +archive['ArchiveId'])
+            print (archive['CreationDate']+" Description: "\
+                   +archive['ArchiveDescription']+" ID: "\
+                   +archive['ArchiveId'])
             delete_job(archive['ArchiveId'])
     rm_file()
 
